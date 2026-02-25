@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+2 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "C:/Users/laney/source/repos/POKEMON-2DGame/test/build/vendored/SDL_image/external/dav1d-build/CMakeFiles/dav1d.dir/embed.manifest"
