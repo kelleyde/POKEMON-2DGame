@@ -11,19 +11,25 @@ public:
 
     // Apply latest input/collision settings and move player.
     void update(InputHandler& input, float deltaTime) override;
+
     // Draw the player in-world.
     void render(SDL_Renderer* renderer) override;
 
     // Set current movement buttons from input.
     void setMovementInput(bool up, bool down, bool left, bool right);
+
     // Update room bounds + blocking collision volumes.
     void setCollisionEnvironment(const SDL_FRect& roomBounds, const std::vector<SDL_FRect>& blockers);
+
     // Define spawn location used when leaving battle.
     void setSpawnPoint(float x, float y);
+
     // Move player back to spawn location.
     void resetToSpawn();
+
     // Box in front of player used for interaction checks.
     SDL_FRect getInteractionProbe() const;
+    
     // Render a small player cursor over battle menu options.
     void renderBattleCursor(int optionIndex, const SDL_FRect& battleOptionsArea);
 

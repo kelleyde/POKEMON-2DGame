@@ -3,11 +3,6 @@
 #include <SDL3_image/SDL_image.h>
 #include <iostream>
 
-// Return the GameObject that owns this component.
-GameObject* Component::getOwner() const
-{
-    return owner;
-}
 
 // Internal attachment API used only by GameObject.
 void Component::setOwner(GameObject* go)
@@ -58,12 +53,6 @@ void SpriteComponent::setPosition(float x, float y)
     destRect.y = y;
 }
 
-void SpriteComponent::moveBy(float dx, float dy)
-{
-    // Apply frame-relative movement deltas.
-    destRect.x += dx;
-    destRect.y += dy;
-}
 
 void SpriteComponent::setSourceRect(int x, int y, int w, int h)
 {
@@ -76,11 +65,6 @@ void SpriteComponent::setSourceRect(int x, int y, int w, int h)
     useSourceRect = true;
 }
 
-void SpriteComponent::clearSourceRect()
-{
-    // Render full texture region instead of cropped frame.
-    useSourceRect = false;
-}
 
 void SpriteComponent::setSize(float width, float height)
 {
@@ -98,11 +82,6 @@ void SpriteComponent::drawAt(const SDL_FRect& destination)
     SDL_RenderTexture(ownerRenderer, texture, useSourceRect ? &sourceRect : nullptr, &destination);
 }
 
-SDL_FRect* SpriteComponent::getRect()
-{
-    // Gives external systems direct access to sprite destination.
-    return &destRect;
-}
 
 void SpriteComponent::render(SDL_Renderer*)
 {

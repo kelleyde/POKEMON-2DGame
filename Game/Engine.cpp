@@ -117,7 +117,7 @@ void Engine::run()
             if (gameState == GameState::Roaming)
             {
                 // Ensure battle mode has a valid monster when forced by dev key.
-                scene.onBattleEntered(MonsterType::Slime);
+                scene.onBattleEntered(MonsterType::Red);
             }
             gameState = GameState::Battle;
             std::cout << "State: Battle\n";

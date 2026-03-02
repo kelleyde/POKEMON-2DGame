@@ -2,15 +2,20 @@
 #include <memory>
 #include <random>
 #include <vector>
-#include "Box.hpp"
-#include "GameObject.hpp"
+
 #include "InputHandler.hpp"
+#include "GameObject.hpp"
+
+#include "Box.hpp"
+
 #include "Monster.hpp"
+
 #include "Player.hpp"
 
 // Scene manages both major game states:
 // - Roaming: world objects/collision/player movement/grass encounters
 // - Battle: monster + battle menu framework
+
 class Scene {
 public:
     ~Scene();
@@ -31,8 +36,10 @@ public:
 
     // Input stage for current state.
     void processInput(const InputHandler& input, Mode mode);
+    
     // Update stage for current state.
     void update(float deltaTime, Mode mode);
+    
     // Render stage for current state.
     void render(SDL_Renderer* renderer, Mode mode);
 
@@ -42,7 +49,6 @@ public:
     void onBattleEntered(MonsterType type);
     void onBattleExited();
 
-    Player* getPlayer() const;
 
 private:
     struct WorldSprite {
@@ -68,6 +74,7 @@ private:
     int windowHeight = 600;
 
     // Roaming world bounds with 32px border wall.
+    //The orginal had a 32 pixel frame this was left in //fix later
     SDL_FRect roomBounds{32.0f, 32.0f, 736.0f, 536.0f};
 
     // Player and interactables in roaming world.
@@ -82,13 +89,13 @@ private:
 
     // Battle state framework.
     std::unique_ptr<Monster> activeMonster;
-    MonsterType activeMonsterType = MonsterType::Slime;
+    MonsterType activeMonsterType = MonsterType::Red;
     int selectedBattleOption = static_cast<int>(BattleOption::Attack);
 
     // Transition requests consumed by Engine.
     bool requestBattleStart = false;
     bool requestBattleExit = false;
-    MonsterType pendingEncounterMonster = MonsterType::Slime;
+    MonsterType pendingEncounterMonster = MonsterType::Red;
 
     // RNG for random encounters.
     std::mt19937 rng{std::random_device{}()};

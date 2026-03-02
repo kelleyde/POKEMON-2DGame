@@ -1,12 +1,15 @@
 #include "Monster.hpp"
 
+
 namespace {
 MonsterDefinition makeDefinition(
     const char* name,
-    int hp,
-    int attack,
-    int defense,
-    int speed,
+
+    //these have no affect, emplement later
+    //int hp,
+    //int attack,
+    //int defense,
+    //int speed,
     float srcX,
     float srcY,
     float srcW,
@@ -15,12 +18,15 @@ MonsterDefinition makeDefinition(
     float drawH)
 {
     MonsterDefinition def{};
-    def.displayName = name;
-    def.stats.maxHP = hp;
-    def.stats.currentHP = hp;
-    def.stats.attack = attack;
-    def.stats.defense = defense;
-    def.stats.speed = speed;
+   def.displayName = name;
+
+   //these have no affect, emplement later
+    //def.stats.maxHP = hp;
+    // def.stats.currentHP = hp;
+    // def.stats.attack = attack;
+   // def.stats.defense = defense;
+  //  def.stats.speed = speed; 
+
     def.sourceFrame = SDL_FRect{srcX, srcY, srcW, srcH};
     def.drawWidth = drawW;
     def.drawHeight = drawH;
@@ -61,56 +67,42 @@ void Monster::render(SDL_Renderer* renderer)
     (void)renderer;
 }
 
-void Monster::setType(MonsterType newType)
-{
-    type = newType;
-    applyDefinition();
-}
-
-MonsterType Monster::getType() const
-{
-    return type;
-}
-
-const char* Monster::getDisplayName() const
-{
-    return getDefinition(type).displayName;
-}
 
 const MonsterDefinition& Monster::getDefinition(MonsterType type)
 {
     // Monster atlas layout in sprite.png:
+    // - Red monster segment:    y = 512, size = 96x128
     // - Blue monster segment:   y = 256, size = 96x128
     // - Yellow monster segment: y = 384, size = 96x128
-    // - Red monster segment:    y = 512, size = 96x128
-    static const MonsterDefinition slime = makeDefinition(
-        "Slime",
-        18, 6, 4, 5,
+
+    static const MonsterDefinition red = makeDefinition(
+        "Red",
+        //18, 6, 4, 5,
         0.0f, 256.0f, 96.0f, 128.0f,
         192.0f, 256.0f);
 
-    static const MonsterDefinition wisp = makeDefinition(
-        "Wisp",
-        14, 9, 3, 8,
+    static const MonsterDefinition blue = makeDefinition(
+        "Blue",
+        //14, 9, 3, 8,
         0.0f, 384.0f, 96.0f, 128.0f,
         192.0f, 256.0f);
 
-    static const MonsterDefinition golem = makeDefinition(
-        "Golem",
-        30, 7, 10, 2,
+    static const MonsterDefinition yellow = makeDefinition(
+        "Yellow",
+        //30, 7, 10, 2,
         0.0f, 512.0f, 96.0f, 128.0f,
         192.0f, 256.0f);
 
     switch (type)
     {
-    case MonsterType::Slime:
-        return slime;
-    case MonsterType::Wisp:
-        return wisp;
-    case MonsterType::Golem:
-        return golem;
+    case MonsterType::Blue:
+        return blue;
+    case MonsterType::Red:
+        return red;
+    case MonsterType::Yellow:
+        return yellow;
     default:
-        return slime;
+        return blue;
     }
 }
 

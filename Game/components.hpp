@@ -9,13 +9,13 @@ class Component {
 public:
     // Virtual destructor for safe deletion through base pointer.
     virtual ~Component() = default;
+    
     // Optional logic hook executed each frame.
     virtual void update(float deltaTime) {}
+    
     // Optional draw hook executed each frame.
     virtual void render(SDL_Renderer* renderer) {}
 
-    // Returns owning GameObject, if any.
-    GameObject* getOwner() const;
 
 private:
     // Called by GameObject when the component is attached.
@@ -36,20 +36,19 @@ public:
 
     // Load a texture from file and configure destination draw size.
     bool loadSprite(SDL_Renderer* renderer, const char* path, float width = 64.0f, float height = 64.0f);
+    
     // Set top-left draw position in world/screen coordinates.
     void setPosition(float x, float y);
-    // Apply movement delta to current draw position.
-    void moveBy(float dx, float dy);
+   
     // Set source rectangle (sprite-sheet frame) in pixels.
     void setSourceRect(int x, int y, int w, int h);
-    // Disable source-rect cropping and render entire texture.
-    void clearSourceRect();
+
     // Set render size without changing position.
     void setSize(float width, float height);
+
     // Render this sprite at a custom destination rectangle.
     void drawAt(const SDL_FRect& destination);
-    // Direct access to destination rectangle for advanced callers.
-    SDL_FRect* getRect();
+
     // Draw sprite each frame.
     void render(SDL_Renderer* renderer) override;
 

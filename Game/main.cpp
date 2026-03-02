@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     // - input polling
     // - scene update + render
     Engine engine;
+    
     // Initialize engine and core resources.
     // Return non-zero if startup fails.
     if (!engine.init("Creature", 800, 600))
@@ -26,6 +27,7 @@ int main(int argc, char* argv[])
 
     // Explicit teardown of SDL resources and subsystems.
     engine.clean();
+
     // Normal exit status.
     return 0;
 }

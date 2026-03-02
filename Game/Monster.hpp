@@ -6,9 +6,12 @@
 // Supported monster archetypes.
 // Add new values here as you introduce more monster content.
 enum class MonsterType {
-    Slime,
-    Wisp,
-    Golem
+    //Slime,
+    //Wisp,
+    //Golem,
+    Red,
+    Blue,
+    Yellow
 };
 
 // Data definition for one monster type.
@@ -32,24 +35,13 @@ public:
     void update(InputHandler& input, float deltaTime) override;
     void render(SDL_Renderer* renderer) override;
 
-    // Runtime type switching support for evolution/forms/testing.
-    void setType(MonsterType newType);
-    MonsterType getType() const;
-    const char* getDisplayName() const;
-
     // Resolve type -> definition. Central point for new monster data.
     static const MonsterDefinition& getDefinition(MonsterType type);
-
-    // Battle monster should not block roaming movement.
-    bool blocksMovement() const override
-    {
-        return false;
-    }
 
 private:
     // Apply the current type's stats + sprite frame.
     void applyDefinition();
 
     SpriteComponent* sprite = nullptr;
-    MonsterType type = MonsterType::Slime;
+    MonsterType type = MonsterType:: Red;
 };

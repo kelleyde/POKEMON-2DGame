@@ -4,6 +4,7 @@ void InputHandler::update(bool& running)
 {
     // Reused local event object used by SDL_PollEvent().
     SDL_Event event;
+    
     // Start new frame with empty one-shot key press list.
     keyDownEvents.clear();
 
@@ -13,6 +14,7 @@ void InputHandler::update(bool& running)
         // Window close button or OS quit signal.
         if (event.type == SDL_EVENT_QUIT)
             running = false;
+
         // Capture key-down events for one-frame button actions.
         if (event.type == SDL_EVENT_KEY_DOWN)
             keyDownEvents.push_back(event);

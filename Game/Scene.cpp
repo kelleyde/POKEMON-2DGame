@@ -63,6 +63,8 @@ void Scene::initialize(SDL_Renderer* inRenderer, int inWindowWidth, int inWindow
         SDL_FRect{360.0f, 340.0f, 32.0f, 32.0f},
         true,
         false});
+
+
     worldSprites.push_back(WorldSprite{
         SDL_FRect{64.0f, 768.0f, 32.0f, 32.0f},  // rock icon
         SDL_FRect{500.0f, 340.0f, 32.0f, 32.0f},
@@ -119,7 +121,8 @@ void Scene::processInput(const InputHandler& input, Mode mode)
             }
         }
     }
-    else
+
+    if (mode == Mode::Battle)
     {
         // In battle we use left/right to change action selection.
         player->setMovementInput(false, false, false, false);
@@ -156,6 +159,7 @@ void Scene::update(float deltaTime, Mode mode)
     {
         updateRoaming(deltaTime);
     }
+
     else
     {
         updateBattle(deltaTime);
@@ -213,10 +217,6 @@ void Scene::onBattleExited()
     }
 }
 
-Player* Scene::getPlayer() const
-{
-    return player.get();
-}
 
 void Scene::rebuildCollisionVolumes()
 {
@@ -335,13 +335,17 @@ void Scene::renderRoaming(SDL_Renderer* renderer)
             SDL_RenderTexture(renderer, spriteSheet, &sprite.source, &sprite.destination);
         }
     }
-
+    
+    //use this for later
+    /*
     // Layer 4: text box framework (placeholder frame at bottom).
     SDL_FRect textBox = {24.0f, static_cast<float>(windowHeight - 170), static_cast<float>(windowWidth - 48), 146.0f};
     SDL_SetRenderDrawColor(renderer, 20, 20, 28, 220);
     SDL_RenderFillRect(renderer, &textBox);
     SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
     SDL_RenderRect(renderer, &textBox);
+    */
+
 }
 
 void Scene::renderBattle(SDL_Renderer* renderer)
@@ -400,9 +404,9 @@ MonsterType Scene::getRandomMonsterType()
 {
     std::uniform_int_distribution<int> pick(0, 2);
     const int value = pick(rng);
-    if (value == 0) return MonsterType::Slime;
-    if (value == 1) return MonsterType::Wisp;
-    return MonsterType::Golem;
+    if (value == 0) return MonsterType::Red;
+    if (value == 1) return MonsterType::Blue;
+    return MonsterType::Yellow;
 }
 
 void Scene::handleBattleSelection()
@@ -418,13 +422,13 @@ void Scene::handleBattleSelection()
         // Monster dialog for now just prints color label.
         switch (activeMonsterType)
         {
-        case MonsterType::Slime:
+        case MonsterType::Red:
             std::cout << "Monster dialog: blue\n";
             break;
-        case MonsterType::Wisp:
+        case MonsterType::Blue:
             std::cout << "Monster dialog: yellow\n";
             break;
-        case MonsterType::Golem:
+        case MonsterType::Yellow:
             std::cout << "Monster dialog: red\n";
             break;
         }

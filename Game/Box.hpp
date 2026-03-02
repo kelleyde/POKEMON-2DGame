@@ -11,7 +11,9 @@ public:
     Box(SDL_Renderer* renderer, float x, float y);
 
     void update(InputHandler& input, float deltaTime) override;
+
     void render(SDL_Renderer* renderer) override;
+    
     void onInteract() override;
 
 private:
