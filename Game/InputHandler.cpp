@@ -39,3 +39,13 @@ bool InputHandler::wasKeyPressed(SDL_Keycode key) const
     }
     return false;
 }
+
+void InputHandler::doInput()
+{
+    if (isKeyDown(SDL_SCANCODE_UP)) up->execute();
+    else if (isKeyDown(SDL_SCANCODE_DOWN)) down->execute();
+    else if (isKeyDown(SDL_SCANCODE_LEFT)) left->execute();
+    else if (isKeyDown(SDL_SCANCODE_RIGHT)) right->execute();
+    else if (wasKeyPressed(SDLK_a)) selecta->execute();
+}
+

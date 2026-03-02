@@ -19,4 +19,12 @@ private:
     const bool* keyboardState = nullptr;
     // Key-down events copied during this frame's poll pass.
     std::vector<SDL_Event> keyDownEvents;
+
+    // store a pointer to each command
+    Command* up;
+    Command* down;
+    Command* right;
+    Command* left;
+    Command* selecta;
+
 };
