@@ -5,31 +5,31 @@
 class Command {
 public:
 	virtual void ~Command;
-	virtual void execute() = 0;
+	virtual void execute(Monster& monster) = 0;
 };
 
 class MoveLeft : public Command {
 public:
-	virtual void execute() { moveLeft(); }
+	virtual void execute(Monster& monster, Scene::Mode mode) { moveLeft(); }
 };
 
 class MoveRight : public Command {
 public:
-	virtual void execute() { moveRight(); }
+	virtual void execute(Monster& monster, Scene::Mode mode) { moveRight(); }
 };
 
 class MoveUp : public Command {
 public:
-	virtual void execute() { moveUp(); }
+	virtual void execute(Monster& monster, Scene::Mode mode) { moveUp(); }
 };
 
 
 class MoveDown : public Command {
 public:
-	virtual void execute() { moveDown(); }
+	virtual void execute(Monster& monster, Scene::Mode mode) { moveDown(); }
 };
 
 class Select : public Command {
 public:
-	virtual void execute() { select(); }
+	virtual void execute(Scene::Mode mode) { select(); }
 };
