@@ -1,61 +1,72 @@
 #pragma once
+
 #include <SDL3/SDL.h>
 #include "Scene.hpp"
 #include "InputHandler.hpp"
 
-// Engine owns SDL window/renderer setup and runs the main loop.
+// ENGINE - MAIN GAME LOOP AND SYSTEM MANAGER
+// Engine owns and manages all high-level game systems:
+// - SDL initialization and shutdown
+// - Window and renderer lifecycle
+// - Main game loop (input -> update -> render)
+// - Frame timing and delta time calculation
+// - Game state transitions (Start -> Roaming -> Battle -> End)
+// - Background texture management for each game state
+//
+// The Engine is responsible for orchestrating the overall game flow
+// and maintaining frame rate consistency.
 class Engine {
 public:
 
-    // Initializes SDL, creates window/renderer, loads textures,
-    // and creates initial world objects.
+    // Initialize SDL, create window/renderer, load textures, and set up the scene.
+    // Returns false if initialization fails.
+
+    //   title: window title string
+    //   width, height: window dimensions in pixels
     bool init(const char* title, int width, int height);
     
-    // Runs the game loop:
-    // 1) poll input
-    // 2) update world state
-    // 3) draw frame
-    // 4) frame-cap timing
-    
+    // Run the main game loop.
+    // Continues until a quit event is received or the running flag is cleared.
+    // Loop stages per frame:
+    // 1 Poll SDL events and update input state
+    // 2 Update active game objects and logic based on current game state
+    // 3 Render frame with appropriate backgrounds/objects
+    // 4 Frame cap timing (targets 60 FPS)
     void run();
     
-    // Releases textures/window/renderer and shuts down SDL.
+    // Release textures, renderer, window, and shut down SDL.
+    // Must be called to properly clean up resources.
     void clean();
 
 private:
-    // High-level scene mode used to choose which background is rendered.
+    // GAME STATE ENUM
+    // Represents the major screen/mode displayed by the engine.
     enum class GameState {
-        // Normal world exploration.
-        Roaming,
-        // Battle presentation mode.
-        Battle
+        Start,          // Title/start screen shown at launch
+        Roaming,        // Normal world exploration mode
+        Battle,         // Active combat encounter
+        End             // Victory screen shown after successful battle
     };
 
-    // Native SDL window handle.
-    SDL_Window* window = nullptr;
-    
-    // SDL renderer used for all draw calls.
-    SDL_Renderer* renderer = nullptr;
-    
-    // Background texture for roaming state.
-    SDL_Texture* roamingBackground = nullptr;
-    
-    // Background texture for battle state.
-    SDL_Texture* battleBackground = nullptr;
+    // SDL RESOURCES
+    SDL_Window* window = nullptr;           // Native window handle
+    SDL_Renderer* renderer = nullptr;       // SDL rendering context
 
-    // Cached window size used when drawing full-screen backgrounds.
+    // BACKGROUND TEXTURES
+    SDL_Texture* roamingBackground = nullptr;   // Texture for world exploration
+    SDL_Texture* battleBackground = nullptr;    // Texture for combat scenes
+    SDL_Texture* startBackground = nullptr;     // Texture for title screen
+    SDL_Texture* endBackground = nullptr;       // Texture for victory screen
+
+
+    // Used for full-screen background rendering.
+    // Updated during init().
     int windowWidth = 800;
     int windowHeight = 600;
 
-    // Main-loop flag controlled by input/events.
-    bool running = true;
-    
-    // Current game-state mode (roaming by default).
-    GameState gameState = GameState::Roaming;
-
-    // Current scene containing game objects.
-    Scene scene;
-    
-    // Input polling and key state helper.
-    InputHandler input;
+    // GAME LOOP STATE
+    bool running = true;                    // Main loop flag controlled by quit events
+    GameState gameState = GameState::Start;  // Current screen mode
+    Scene scene;                            // Game scene (world objects, player, battles)
+    InputHandler input;                     // Input polling and state management
 };

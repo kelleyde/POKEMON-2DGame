@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+// Constructor: creates sprite component and sets up collision box.
 Box::Box(
     SDL_Renderer* renderer,
     float x,
@@ -12,10 +13,11 @@ Box::Box(
     : firstInteractText(firstInteractText),
       repeatInteractText(repeatInteractText)
 {
-    // Draw one 32x32 interactable tile from the sprite sheet.
+    // Create sprite component for this box and load from sprite sheet.
     sprite = addComponent<SpriteComponent>();
     if (sprite->loadSprite(renderer, "sprite.png", 32.0f, 32.0f))
     {
+        // Set the source rectangle to display the correct sprite sheet tile.
         sprite->setSourceRect(
             static_cast<int>(sourceFrame.x),
             static_cast<int>(sourceFrame.y),
@@ -24,25 +26,28 @@ Box::Box(
         sprite->setPosition(x, y);
     }
 
-    // Interactable occupies one tile-sized blocking volume.
+    // Define collision box for this box (one standard 32x32 tile).
     setCollisionBox(SDL_FRect{x, y, 32.0f, 32.0f});
 }
 
+// Per-frame update: propagate to components.
 void Box::update(InputHandler&, float deltaTime)
 {
-    // Box has no continuous logic yet; keep component updates for consistency.
+    // Box has no continuous logic; just update any attached components.
     updateComponents(deltaTime);
 }
 
+// Per-frame render: propagate to components.
 void Box::render(SDL_Renderer* renderer)
 {
     renderComponents(renderer);
     (void)renderer;
 }
 
+// Interaction handler: sets dialogue text based on interaction state.
 void Box::onInteract()
 {
-    // Set current dialogue text each time interaction happens.
+    // On first interaction, show the firstInteractText.
     if (!opened)
     {
         currentInteractText = firstInteractText;
@@ -50,6 +55,7 @@ void Box::onInteract()
         return;
     }
 
+    // On subsequent interactions, show repeat text (or cycle back to first).
     if (!repeatInteractText.empty())
     {
         currentInteractText = repeatInteractText;
@@ -60,11 +66,13 @@ void Box::onInteract()
     }
 }
 
+// Query method: is this box opened?
 bool Box::isOpened() const
 {
     return opened;
 }
 
+// Query method: get the current interaction text.
 const std::string& Box::getInteractText() const
 {
     return currentInteractText;

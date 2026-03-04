@@ -1,7 +1,9 @@
+
 #pragma once
 
 #include <SDL3/SDL.h>
 
+/*
 class Command {
 public:
 	virtual void ~Command;
@@ -33,3 +35,4 @@ class Select : public Command {
 public:
 	virtual void execute(Scene::Mode mode) { select(); }
 };
+*/

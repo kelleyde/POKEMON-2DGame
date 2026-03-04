@@ -32,7 +32,7 @@ SDL_Texture* loadTexture(SDL_Renderer* renderer, const char* path)
 
 bool Engine::init(const char* title, int width, int height)
 {
-    // Cache window size for later full-screen draw rectangles.
+    // Cache window size for later 
     windowWidth = width;
     windowHeight = height;
 
@@ -69,6 +69,8 @@ bool Engine::init(const char* title, int width, int height)
     // Load background textures used by each game state.
     roamingBackground = loadTexture(renderer, "background.png");
     battleBackground = loadTexture(renderer, "battleground.png");
+    startBackground = loadTexture(renderer, "start.png");
+    endBackground = loadTexture(renderer, "end.png");
 
     // Scene owns world objects/player/battle frameworks.
     scene.initialize(renderer, width, height);
@@ -97,43 +99,17 @@ void Engine::run()
         // Poll OS/SDL events and refresh keyboard state.
         input.update(running);
 
-        // Global hotkeys:
-        // O => roaming mode
-        // P => battle mode
-        // A => accept/confirm action (currently debug log)
-        // B => back/cancel action (currently debug log)
-        if (input.wasKeyPressed(SDLK_O))
+        // State update/input pipeline.
+        if (gameState == GameState::Start)
         {
-            if (gameState == GameState::Battle)
+            if (input.wasKeyPressed(SDLK_A))
             {
-                // Keep scene state consistent when forcing a battle exit.
+                // Begin game from start screen.
                 scene.onBattleExited();
+                gameState = GameState::Roaming;
             }
-            gameState = GameState::Roaming;
-            std::cout << "State: Roaming\n";
-        }
-        if (input.wasKeyPressed(SDLK_P))
-        {
-            if (gameState == GameState::Roaming)
-            {
-                // Ensure battle mode has a valid monster when forced by dev key.
-                scene.onBattleEntered(MonsterType::Red);
-            }
-            gameState = GameState::Battle;
-            std::cout << "State: Battle\n";
-        }
-        if (input.wasKeyPressed(SDLK_A))
-        {
-            std::cout << "A pressed: accept/yes/select\n";
-        }
-        if (input.wasKeyPressed(SDLK_B))
-        {
-            std::cout << "B pressed: back/no/decline\n";
         }
 
-        // Scene pipeline:
-        // 1) Process state-specific input
-        // 2) Update state-specific logic
         if (gameState == GameState::Roaming)
         {
             scene.processInput(input, Scene::Mode::Roaming);
@@ -144,19 +120,30 @@ void Engine::run()
             {
                 gameState = GameState::Battle;
                 scene.onBattleEntered(encounter);
-                std::cout << "Encounter started.\n";
             }
         }
-        else
+
+        if (gameState == GameState::Battle)
         {
             scene.processInput(input, Scene::Mode::Battle);
             scene.update(deltaTime, Scene::Mode::Battle);
 
-            if (scene.consumeRequestedBattleExit())
+            if (scene.consumeRequestedEndState())
+            {
+                gameState = GameState::End;
+            }
+            
+            else if (scene.consumeRequestedBattleExit())
             {
                 scene.onBattleExited();
                 gameState = GameState::Roaming;
-                std::cout << "Returned to roaming.\n";
+            }
+        }
+        else if (gameState == GameState::End)
+        {
+            if (input.wasKeyPressed(SDLK_A))
+            {
+                gameState = GameState::Start;
             }
         }
 
@@ -165,7 +152,19 @@ void Engine::run()
         SDL_RenderClear(renderer);
 
         // Choose background based on current game mode.
-        SDL_Texture* stateBackground = (gameState == GameState::Battle) ? battleBackground : roamingBackground;
+        SDL_Texture* stateBackground = roamingBackground;
+        if (gameState == GameState::Start)
+        {
+            stateBackground = startBackground;
+        }
+        else if (gameState == GameState::Battle)
+        {
+            stateBackground = battleBackground;
+        }
+        else if (gameState == GameState::End)
+        {
+            stateBackground = endBackground;
+        }
         if (stateBackground)
         {
             // Fill the entire window with the chosen background texture.
@@ -177,7 +176,7 @@ void Engine::run()
         {
             scene.render(renderer, Scene::Mode::Roaming);
         }
-        else
+        else if (gameState == GameState::Battle)
         {
             scene.render(renderer, Scene::Mode::Battle);
         }
@@ -203,6 +202,8 @@ void Engine::clean()
     // SDL destroy calls are safe with nullptr.
     SDL_DestroyTexture(roamingBackground);
     SDL_DestroyTexture(battleBackground);
+    SDL_DestroyTexture(startBackground);
+    SDL_DestroyTexture(endBackground);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     // Shut down SDL global state.

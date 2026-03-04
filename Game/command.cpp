@@ -1,3 +1,4 @@
+/*
 #include "command.hpp"
 #include "Monster.cpp"
 #include "Scene.cpp"
@@ -30,3 +31,4 @@ void Select::execute(Scene::Mode)
 {
 
 }
+*/

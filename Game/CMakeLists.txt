@@ -40,6 +40,12 @@ add_custom_command(TARGET game POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/battleground.png"
         "$<TARGET_FILE_DIR:game>/battleground.png"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/start.png"
+        "$<TARGET_FILE_DIR:game>/start.png"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/end.png"
+        "$<TARGET_FILE_DIR:game>/end.png"
 )
 
 # Allow includes like "Engine.hpp" from the project root.

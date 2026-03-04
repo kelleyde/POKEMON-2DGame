@@ -1,7 +1,6 @@
 #include "Engine.hpp"
 
 // Program entry point for the game process.
-// SDL3 on this target uses the normal C/C++ main() function.
 int main(int argc, char* argv[])
 {
     // Unused right now, but kept to make it easy to add
