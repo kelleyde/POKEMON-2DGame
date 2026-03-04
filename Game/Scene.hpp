@@ -5,6 +5,7 @@
 
 #include "InputHandler.hpp"
 #include "GameObject.hpp"
+#include "components.hpp"
 
 #include "Box.hpp"
 
@@ -22,7 +23,9 @@ public:
 
     enum class Mode {
         Roaming,
-        Battle
+        Battle,
+        Start,
+        End
     };
 
     enum class BattleOption {
@@ -59,10 +62,17 @@ private:
     };
 
     static bool intersects(const SDL_FRect& a, const SDL_FRect& b);
+    bool handleModalDialogueInput(const InputHandler& input);
+    void processRoamingInput(const InputHandler& input);
+    void processBattleInput(const InputHandler& input);
+    void tryInteractWithBox();
     void rebuildCollisionVolumes();
     void updateRoaming(float deltaTime);
     void updateBattle(float deltaTime);
+    void renderWorldSprites(SDL_Renderer* renderer, bool foreground);
     void renderRoaming(SDL_Renderer* renderer);
+    void renderBattleOptions(SDL_Renderer* renderer, const SDL_FRect& bottomPanel);
+    void renderBattleSelectionCursor(SDL_Renderer* renderer, const SDL_FRect& bottomPanel);
     void renderBattle(SDL_Renderer* renderer);
     void buildBattleMonster(SDL_Renderer* renderer, MonsterType type);
     MonsterType getRandomMonsterType();
@@ -96,6 +106,7 @@ private:
     bool requestBattleStart = false;
     bool requestBattleExit = false;
     MonsterType pendingEncounterMonster = MonsterType::Red;
+    DialogueBoxState dialogueBox{};
 
     // RNG for random encounters.
     std::mt19937 rng{std::random_device{}()};

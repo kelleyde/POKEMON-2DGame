@@ -78,19 +78,19 @@ const MonsterDefinition& Monster::getDefinition(MonsterType type)
     static const MonsterDefinition red = makeDefinition(
         "Red",
         //18, 6, 4, 5,
-        0.0f, 256.0f, 96.0f, 128.0f,
+        0.0f, 512.0f, 96.0f, 128.0f,
         192.0f, 256.0f);
 
     static const MonsterDefinition blue = makeDefinition(
         "Blue",
         //14, 9, 3, 8,
-        0.0f, 384.0f, 96.0f, 128.0f,
+        0.0f, 256.0f, 96.0f, 128.0f,
         192.0f, 256.0f);
 
     static const MonsterDefinition yellow = makeDefinition(
         "Yellow",
         //30, 7, 10, 2,
-        0.0f, 512.0f, 96.0f, 128.0f,
+        0.0f, 384.0f, 96.0f, 128.0f,
         192.0f, 256.0f);
 
     switch (type)

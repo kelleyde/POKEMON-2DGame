@@ -33,6 +33,10 @@ public:
     // Render a small player cursor over battle menu options.
     void renderBattleCursor(int optionIndex, const SDL_FRect& battleOptionsArea);
 
+    // Flag set after opening box and receiving the fishing pole.
+    void setFishinpole(bool enabled);
+    bool hasFishinpole() const;
+
 private:
     enum class FacingDirection {
         Down,
@@ -68,4 +72,5 @@ private:
     float pixelsPerSecond = 140.0f;
     float animationTimer = 0.0f;
     int animationColumn = 1; // 0=transition, 1=idle, 2=transition
+    bool fishinpole = false;
 };

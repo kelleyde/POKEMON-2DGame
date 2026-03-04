@@ -49,7 +49,7 @@ void Scene::initialize(SDL_Renderer* inRenderer, int inWindowWidth, int inWindow
 
     // Create player and define stable spawn point.
     player = std::make_unique<Player>(renderer, "sprite.png");
-    player->setSpawnPoint(96.0f, 96.0f);
+    player->setSpawnPoint(96.0f, 160.0f);
     player->resetToSpawn();
 
     // Create one interactable box object.
@@ -336,15 +336,7 @@ void Scene::renderRoaming(SDL_Renderer* renderer)
         }
     }
     
-    //use this for later
-    /*
-    // Layer 4: text box framework (placeholder frame at bottom).
-    SDL_FRect textBox = {24.0f, static_cast<float>(windowHeight - 170), static_cast<float>(windowWidth - 48), 146.0f};
-    SDL_SetRenderDrawColor(renderer, 20, 20, 28, 220);
-    SDL_RenderFillRect(renderer, &textBox);
-    SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
-    SDL_RenderRect(renderer, &textBox);
-    */
+   
 
 }
 
@@ -415,26 +407,40 @@ void Scene::handleBattleSelection()
     switch (option)
     {
     case BattleOption::Attack:
-        std::cout << "Battle action selected: ATTACK\n";
+        std::cout << "Battle action selected: Question\n";
+        switch (activeMonsterType)
+        {
+        case MonsterType::Red:
+            std::cout << "Anything bitin? \n";
+            break;
+        case MonsterType::Blue:
+            std::cout << "Yeah I like swimming how could you tell? \n";
+            break;
+        case MonsterType::Yellow:
+            std::cout << "For 20 bucks an hour ill be your life coach T.T \n";
+            break;
+        }
         break;
+
     case BattleOption::Talk:
         std::cout << "Battle action selected: TALK\n";
         // Monster dialog for now just prints color label.
         switch (activeMonsterType)
         {
         case MonsterType::Red:
-            std::cout << "Monster dialog: blue\n";
+            std::cout << "Going Fishing :3 \n";
             break;
         case MonsterType::Blue:
-            std::cout << "Monster dialog: yellow\n";
+            std::cout << "Hope you are having a good day :D \n";
             break;
         case MonsterType::Yellow:
-            std::cout << "Monster dialog: red\n";
+            std::cout << "Think im gonna go swimming :^ \n";
             break;
         }
         break;
     case BattleOption::Run:
         std::cout << "Battle action selected: RUN\n";
+        std::cout << "Later bud :] \n";
         requestBattleExit = true;
         break;
     }

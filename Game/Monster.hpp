@@ -18,6 +18,7 @@ enum class MonsterType {
 // This is deliberately lightweight and easy to migrate to data files later.
 struct MonsterDefinition {
     const char* displayName = "Unknown";
+    const char* talkLine = "...";
     CombatStats stats{};
     SDL_FRect sourceFrame{0.0f, 0.0f, 64.0f, 64.0f};
     float drawWidth = 128.0f;

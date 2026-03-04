@@ -2,6 +2,7 @@
 
 #include <SDL3_image/SDL_image.h>
 #include <iostream>
+#include "InputHandler.hpp"
 
 
 // Internal attachment API used only by GameObject.
@@ -34,9 +35,9 @@ bool SpriteComponent::loadSprite(SDL_Renderer* renderer, const char* path, float
 
     // Convert to GPU texture for fast rendering.
     texture = SDL_CreateTextureFromSurface(renderer, surface);
+
     // Surface is no longer needed after upload.
     SDL_DestroySurface(surface);
-
     if (!texture)
     {
         std::cerr << "SDL_CreateTextureFromSurface failed: " << SDL_GetError() << '\n';
@@ -93,4 +94,50 @@ void SpriteComponent::render(SDL_Renderer*)
 
     // Draw using either full texture or a specific source frame.
     SDL_RenderTexture(ownerRenderer, texture, useSourceRect ? &sourceRect : nullptr, &destRect);
+}
+
+void showDialogueBox(DialogueBoxState& state, const std::string& text)
+{
+    state.visible = true;
+    state.text = text;
+}
+
+void clearDialogueBox(DialogueBoxState& state)
+{
+    state.visible = false;
+    state.text.clear();
+}
+
+void clearDialogueBoxOnA(DialogueBoxState& state, const InputHandler& input)
+{
+    if (state.visible && input.wasKeyPressed(SDLK_A))
+    {
+        clearDialogueBox(state);
+    }
+}
+
+void renderDialogueBox(SDL_Renderer* renderer, SDL_Texture* spriteSheet, int windowWidth, int windowHeight, const DialogueBoxState& state)
+{
+    if (!state.visible)
+    {
+        return;
+    }
+
+    const SDL_FRect box = {24.0f, static_cast<float>(windowHeight - 170), static_cast<float>(windowWidth - 48), 146.0f};
+    SDL_SetRenderDrawColor(renderer, 20, 20, 28, 230);
+    SDL_RenderFillRect(renderer, &box);
+    SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
+    SDL_RenderRect(renderer, &box);
+
+    // SDL3 debug text to display dialogue lines.
+    SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
+    SDL_RenderDebugText(renderer, box.x + 14.0f, box.y + 20.0f, state.text.c_str());
+
+    // Draw "A" tile prompt from sprite sheet near the lower-right of the box.
+    if (spriteSheet)
+    {
+        const SDL_FRect aSrc = {64.0f, 192.0f, 32.0f, 32.0f};
+        const SDL_FRect aDst = {box.x + box.w - 56.0f, box.y + box.h - 48.0f, 32.0f, 32.0f};
+        SDL_RenderTexture(renderer, spriteSheet, &aSrc, &aDst);
+    }
 }

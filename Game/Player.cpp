@@ -97,6 +97,16 @@ void Player::renderBattleCursor(int optionIndex, const SDL_FRect& battleOptionsA
     sprite->drawAt(cursorDest);
 }
 
+void Player::setFishinpole(bool enabled)
+{
+    fishinpole = enabled;
+}
+
+bool Player::hasFishinpole() const
+{
+    return fishinpole;
+}
+
 void Player::update(InputHandler&, float deltaTime)
 {
     if (!sprite)
