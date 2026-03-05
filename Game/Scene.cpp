@@ -47,9 +47,12 @@ void Scene::initialize(SDL_Renderer* inRenderer, int inWindowWidth, int inWindow
         SDL_DestroySurface(surface);
     }
 
-    // create monster
+    //// create monster
     MonsterType Wisp = MonsterType::Wisp;
-    monst = std::make_unique<Monster>(renderer, 48.0f, 48.0f, Wisp);
+    const MonsterDefinition& def = Monster::getDefinition(Wisp);
+    const float monsterX = (static_cast<float>(windowWidth) - def.drawWidth) * 0.5f;
+    const float monsterY = 48.0f;
+    monst = <Monster>(renderer, monsterX, monsterY, Wisp);
     
 
     // Create player and define stable spawn point.
@@ -333,6 +336,9 @@ void Scene::renderRoaming(SDL_Renderer* renderer)
     if (monst) {
         monst->render(renderer);
     }
+     
+    //monsterPos(renderer, 48.0f, 48.0f);
+
 
     // Layer 3: foreground objects (grass over the player).
     for (const WorldSprite& sprite : worldSprites)
@@ -443,4 +449,17 @@ void Scene::handleBattleSelection()
         requestBattleExit = true;
         break;
     }
+}
+
+
+
+void Scene::monsterPos(SDL_Renderer* renderer, float x, float y)
+{
+    SDL_Texture* monstText = IMG_LoadTexture(renderer, "sprite.png");
+    float w, h;
+    SDL_GetTextureSize(monstText, &w, &h);
+    SDL_FRect pos = { x, y, float(w), float(h) };
+    SDL_RenderTexture(renderer, monstText, nullptr, &pos);
+    SDL_RenderPresent(renderer);
+
 }

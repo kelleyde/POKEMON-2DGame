@@ -51,7 +51,7 @@ public:
     void Monster::Left();
     void Monster::Up();
     void Monster::Down();
-    //void Monster::Draw();
+    void Monster::monsterPos(SDL_Renderer* renderer, float x, float y);
     void Monster::NewSize(float w, float h);
 
 

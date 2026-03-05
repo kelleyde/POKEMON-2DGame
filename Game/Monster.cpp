@@ -133,16 +133,16 @@ void Monster::applyDefinition()
     }
 }
 
-//void Monster::monsterPos(SDL_Renderer* renderer, float x, float y)
-//{
-//    SDL_Texture* monstText = IMG_LoadTexture(renderer, "sprite.png");
-//    int w, h;
-//    SDL_GetTextureSize(monstText, &w, &h);
-//    SDL_FRect pos = { x, y, float(w), float(h) };
-//    SDL_RenderTexture(renderer, monstText, nullptr, &pos);
-//    SDL_RenderPresent(renderer);
-//
-//}
+void Monster::monsterPos(SDL_Renderer* renderer, float x, float y)
+{
+    SDL_Texture* monstText = IMG_LoadTexture(renderer, "sprite.png");
+    int w, h;
+    SDL_GetTextureSize(monstText, &w, &h);
+    SDL_FRect pos = { x, y, float(w), float(h) };
+    SDL_RenderTexture(renderer, monstText, nullptr, &pos);
+    SDL_RenderPresent(renderer);
+
+}
 
 void Monster::Right()
 {

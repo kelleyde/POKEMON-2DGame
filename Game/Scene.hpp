@@ -41,6 +41,7 @@ public:
     bool consumeRequestedBattleExit();
     void onBattleEntered(MonsterType type);
     void onBattleExited();
+    void monsterPos(SDL_Renderer* renderer, float x, float y)
 
     Player* getPlayer() const;
 
