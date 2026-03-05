@@ -40,14 +40,15 @@ bool InputHandler::wasKeyPressed(SDL_Keycode key) const
     return false;
 }
 
-void InputHandler::doInput()
-{
-    if (isKeyDown(SDL_SCANCODE_UP)) up->execute(Monster & monster, Scene::Mode mode);
-    else if (isKeyDown(SDL_SCANCODE_DOWN)) down->execute(Monster & monster, Scene::Mode mode));
-    else if (isKeyDown(SDL_SCANCODE_LEFT)) left->execute(Monster & monster, Scene::Mode mode));
-    else if (isKeyDown(SDL_SCANCODE_RIGHT)) right->execute(Monster & monster, Scene::Mode mode));
-    else if (wasKeyPressed(SDLK_a)) selecta->execute(Scene::Mode mode);
-
-    return NULL;
-}
+//void InputHandler::doInput()
+//void InputHandler::doInput()
+//{
+//    if (isKeyDown(SDL_SCANCODE_UP)) up->execute(Monster & monster, Scene::Mode mode);
+//    else if (isKeyDown(SDL_SCANCODE_DOWN)) down->execute(Monster & monster, Scene::Mode mode));
+//    else if (isKeyDown(SDL_SCANCODE_LEFT)) left->execute(Monster & monster, Scene::Mode mode));
+//    else if (isKeyDown(SDL_SCANCODE_RIGHT)) right->execute(Monster & monster, Scene::Mode mode));
+//    else if (wasKeyPressed(SDLK_a)) selecta->execute(Scene::Mode mode);
+//
+//    return NULL;
+//}
 

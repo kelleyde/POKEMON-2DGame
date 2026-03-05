@@ -46,6 +46,16 @@ public:
         return false;
     }
 
+    //void Monster::s(SDL_Renderer* renderer, float x, float y);
+    void Monster::Right();
+    void Monster::Left();
+    void Monster::Up();
+    void Monster::Down();
+    //void Monster::Draw();
+    void Monster::NewSize(float w, float h);
+
+
+
 private:
     // Apply the current type's stats + sprite frame.
     void applyDefinition();

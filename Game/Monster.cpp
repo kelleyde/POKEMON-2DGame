@@ -12,7 +12,8 @@ MonsterDefinition makeDefinition(
     float srcW,
     float srcH,
     float drawW,
-    float drawH)
+    float drawH
+)
 {
     MonsterDefinition def{};
     def.displayName = name;
@@ -131,3 +132,61 @@ void Monster::applyDefinition()
             static_cast<int>(def.sourceFrame.h));
     }
 }
+
+//void Monster::monsterPos(SDL_Renderer* renderer, float x, float y)
+//{
+//    SDL_Texture* monstText = IMG_LoadTexture(renderer, "sprite.png");
+//    int w, h;
+//    SDL_GetTextureSize(monstText, &w, &h);
+//    SDL_FRect pos = { x, y, float(w), float(h) };
+//    SDL_RenderTexture(renderer, monstText, nullptr, &pos);
+//    SDL_RenderPresent(renderer);
+//
+//}
+
+void Monster::Right()
+{
+    if (!sprite) {
+        return;
+    }
+    sprite->moveBy(0.1f, 0.0f);
+}
+
+void Monster::Left()
+{
+    if (!sprite) {
+        return;
+    }
+    sprite->moveBy(-0.1f, 0.0f);
+}
+
+void Monster::Up()
+{
+    if (!sprite) {
+        return;
+    }
+    sprite->moveBy(0.0f, -0.1f);
+}
+
+void Monster::Down()
+{
+    if (!sprite) {
+        return;
+    }
+    sprite->moveBy(0.0f, -0.1f);
+}
+
+//void Monster::Draw()
+//{ 
+//    if (!sprite) {
+//        return;
+//    }
+//    SDL_FRect* dest = sprite->getRect();
+//    sprite->drawAt(dest);
+//}
+
+void Monster::NewSize(float w, float h)
+{
+    sprite->setSize(w, h);
+}
+

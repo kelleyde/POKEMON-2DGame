@@ -47,6 +47,11 @@ void Scene::initialize(SDL_Renderer* inRenderer, int inWindowWidth, int inWindow
         SDL_DestroySurface(surface);
     }
 
+    // create monster
+    MonsterType Wisp = MonsterType::Wisp;
+    monst = std::make_unique<Monster>(renderer, 48.0f, 48.0f, Wisp);
+    
+
     // Create player and define stable spawn point.
     player = std::make_unique<Player>(renderer, "sprite.png");
     player->setSpawnPoint(96.0f, 96.0f);
@@ -323,6 +328,10 @@ void Scene::renderRoaming(SDL_Renderer* renderer)
     if (player)
     {
         player->render(renderer);
+    }
+
+    if (monst) {
+        monst->render(renderer);
     }
 
     // Layer 3: foreground objects (grass over the player).

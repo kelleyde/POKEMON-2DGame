@@ -21,10 +21,10 @@ private:
     std::vector<SDL_Event> keyDownEvents;
 
     // store a pointer to each command
-    Command* up;
-    Command* down;
-    Command* right;
-    Command* left;
-    Command* selecta;
+    //Command* up;
+    //Command* down;
+    //Command* right;
+    //Command* left;
+    //Command* selecta;
 
 };
